@@ -39,6 +39,8 @@ case node['platform_family']
     end
   when 'smartos'
     packages = %w{ nodejs }
+  when 'rhel'
+    packages = %w{ nodejs npm }
   else
     Chef::Log.error "There are no nodejs packages for this platform; please use the source or binary method to install node"
     return
@@ -46,4 +48,11 @@ end
 
 packages.each do |node_pkg|
   package node_pkg
+end
+
+if node['platform_family'] == 'rhel'
+  link "/usr/bin/nodejs" do
+    to "/usr/bin/node"
+    only_if "test ! -e /usr/bin/nodejs"
+  end
 end
