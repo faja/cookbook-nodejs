@@ -40,6 +40,7 @@ case node['platform_family']
   when 'smartos'
     packages = %w{ nodejs }
   when 'rhel'
+    include_recipe 'yum::epel'
     packages = %w{ nodejs npm }
   else
     Chef::Log.error "There are no nodejs packages for this platform; please use the source or binary method to install node"
